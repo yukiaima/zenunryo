@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>全雲量記号問題</title>
+</head>
+<body>
+
+<!-- 問題作成と答え表示 -->
+<div style="text-align:center">
+    <a href="https://harenote.com/glossary/cloud-cover-icon/" target="_blank">参考サイト</a>
+    <h1>問題自動作成</h1>
+    <form id="form1" action="#">
+        <input type="button" onclick="click_button()" value="問題作成・答え表示">
+    </form>    
+</div>
+
+<div style="text-align:center">
+<script>
+'use strict';
+
+//変数の宣言
+let this_element = document.currentScript; //この<script>要素
+let img_width = 80; //画像のサイズ
+let state_QA = 'A' //問題(Q) or 答え(A) の表示用フラグ
+let img_name; // 画像名を格納する変数
+let explain; //説明文を格納する変数
+let explain_list = [
+    ['unryou-0.jpg', '0 雲がない'],
+    ['unryou-1.jpg', '1以下 0ではない'],
+    ['unryou-2-3.jpg', '2~3（10分量） 2（8分量）'],
+    ['unryou-4.jpg', '4（10分量） 3（8分量）'],
+    ['unryou-5.jpg', '5（10分量） 4（8分量）'],
+    ['unryou-6.jpg', '6（10分量） 5（8分量）'],
+    ['unryo-7.jpg', '7~8（10分量） 6（8分量）'],
+    ['unryo-9-10.jpg', '9~10（10分量） 7（8分量）'],
+    ['unryo-10.jpg', '10（10分量） 8（8分量）'],
+    ['unryo-x.jpg', '不明']
+]
+
+//関数定義
+function make_test(){
+    //取得する配列の行インデックス
+    let i = Math.floor( Math.random() * explain_list.length);
+    
+    // 画像、説明文
+    img_name = explain_list[i][0];
+    explain = explain_list[i][1];
+    
+    this_element.insertAdjacentHTML('beforebegin', 
+    '<figure><img src="全雲量記号\\' + img_name + '" alt="図が取得できません" width="' + img_width + '"><figcaption></figcaption></figure>');
+}
+
+function show_answer(){
+    this_element.insertAdjacentHTML('beforebegin', '<p>' + explain + '</p>');
+}
+
+function click_button(){
+  //state_QAがAなら、問題を表示して、Qに変更
+  if (state_QA == 'A'){
+        make_test();
+        state_QA = 'Q';
+    }
+  //state_QAがQなら、答えを表示して、Aに変更
+  else if (state_QA == 'Q'){
+        show_answer();
+        state_QA = 'A';
+    }
+}
+
+// htmlへ出力（全て出力）
+this_element.insertAdjacentHTML('afterend', '<h1>全雲量記号一覧</h1><table><tbody id="list_table"></tbody></table>');
+let tr_text = ''; //trに書き出すhtmlを格納する変数
+for (let i = 0; i < explain_list.length; i++){
+    // 画像、説明文
+    img_name = explain_list[i][0];
+    explain = explain_list[i][1];
+    
+    // 表に書き出すhtml
+    tr_text += '<td class="img"><img src="全雲量記号\\' + img_name + '" alt="図が取得できません" width="' + img_width + '"></td><td class="explain">' + explain + '</td>';
+    
+    // 図2つたまったら、trに出力して、tr_textをクリア
+    if (i%2 == 1){
+        document.getElementById('list_table').insertAdjacentHTML('beforeend', tr_text);
+        tr_text = ''
+    }
+    
+}
+
+</script>
+</div>
+
+<noscript>
+<p>このサイトではJavaScriptを使用していますので、有効にしてください。</p>
+</noscript>
+
+</body>
+</html>
